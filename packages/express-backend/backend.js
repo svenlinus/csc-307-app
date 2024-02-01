@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 
 const users = {
   users_list: [
@@ -34,6 +35,7 @@ const users = {
 const app = express();
 const port = 8000;
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -70,27 +72,28 @@ app.get("/users/:id", (req, res) => {
   }
 });
 
-const deleteUser = (user) => {
-  const i = users["users_list"].findIndex((e) => e.id == user.id);
-  users["users_list"].splice(i, 1);
-  return user;
-};
-
-app.post("/users", (req, res) => {
-  const userToAdd = req.body;
-  deleteUser(userToAdd);
+app.delete("/users", (req, res) => {
+  users["users_list"] = req.body;
   res.send();
 });
 
+const createId = () => {
+  const letters = 'abcdefghijklmnopqrstuvwxyz';
+  const randomLetters = Array.from({ length: 3 }, () => letters[Math.floor(Math.random() * letters.length)]);
+  const randomNumbers = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+  return randomLetters.join('') + randomNumbers;
+};
+
 const addUser = (user) => {
+  user.id = createId();
   users["users_list"].push(user);
   return user;
 };
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
-  addUser(userToAdd);
-  res.send();
+  const user = addUser(userToAdd);
+  res.send(user);
 });
 
 app.listen(port, () => {
