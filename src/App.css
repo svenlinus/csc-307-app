@@ -1,3 +1,25 @@
 .container {
   margin-left: 200px;
 }
+
+td {
+  padding: 10px;
+  text-align: center;
+}
+
+th {
+  padding: 5px;
+}
+
+thead {
+  background-color: rgb(109, 109, 255);
+}
+
+tbody tr {
+  background-color: transparent;
+  border-bottom: 1px solid #ddd;
+}
+
+table {
+  margin-bottom: 10px;
+}
